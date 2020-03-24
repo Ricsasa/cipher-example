@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import Input from './components/Input';
+import Output from './components/Output';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {mostrarOutput: false, value: '' };
+
+    this.handleCifrar = this.handleCifrar.bind(this);
+    this.handleTextAreaChange = this.handleTextAreaChange.bind(this);
+    this.reset = this.reset.bind(this);
+  }
+
+  handleCifrar(event) {
+    //para LEER el estado, se lee directamente
+    this.setState({mostrarOutput: true});
+  }
+
+  handleTextAreaChange(text) {
+    //para MODIFICAR el estado, se usa la función especial this.setState
+    this.setState({value: text});
+  }
+
+  reset(){
+    this.setState({mostrarOutput: false, value: ''});
+  }
+
+  render() {
+    return (
+      <div className="App">
+          <Input 
+            handleCifrar={this.handleCifrar}
+            handleTextAreaChange={this.handleTextAreaChange}
+            value={this.state.value}
+          />
+          <hr />
+          { this.state.mostrarOutput &&
+            <Output 
+              textValue={this.state.value}
+              resetFunction={this.reset}
+            />
+          }
+      </div>
+    );
+  }
 }
 
 export default App;
